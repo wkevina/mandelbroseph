@@ -1,5 +1,6 @@
 #include <iostream>
 #include <pngwriter.h>
+#include <cxxopts.hpp>
 
 using namespace std;
 

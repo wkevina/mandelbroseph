@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
+INCLUDE(ExternalProject)
 project(mandelbroseph)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
@@ -24,6 +25,13 @@ find_package(OPENCL REQUIRED)
 if (OpenCL_FOUND)
 endif(OpenCL_FOUND)
 
+ExternalProject_Add(
+    cxxopts
+    GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
+)
+
 add_executable(mandelbroseph ${SOURCE_FILES})
+
+add_dependencies(mandelbroseph cxxopts)
 
 target_link_libraries(mandelbroseph ${LIBS})
