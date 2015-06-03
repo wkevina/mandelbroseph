@@ -24,6 +24,15 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
 )
 
+
+ExternalProject_Add(
+    "libpng"
+    #SOURCE_DIR "/Users/kevinward/projects/cxxopts"
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
+
+    GIT_REPOSITORY https://github.com/glennrp/libpng.git
+)
+
 ExternalProject_Add(
     pngwriter
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
@@ -46,6 +55,10 @@ include_directories("/usr/local/include/" ${DEPS_DIR}/include)
 add_executable(mandelbroseph ${SOURCE_FILES} mandelbrot.cpp mandelbrot.h)
 
 add_dependencies(mandelbroseph cxxopts)
+
+add_dependencies(mandelbroseph pngwriter)
+
+add_dependencies(pngwriter "libpng")
 
 target_link_libraries(mandelbroseph ${LIBS})
 
