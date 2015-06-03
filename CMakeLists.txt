@@ -10,6 +10,26 @@ set(SOURCE_FILES main.cpp)
 
 set(DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
+find_package(OPENCL REQUIRED)
+
+
+if (OpenCL_FOUND)
+endif(OpenCL_FOUND)
+
+ExternalProject_Add(
+    cxxopts
+    #SOURCE_DIR "/Users/kevinward/projects/cxxopts"
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
+
+    GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
+)
+
+ExternalProject_Add(
+    pngwriter
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
+    GIT_REPOSITORY https://github.com/pngwriter/pngwriter.git
+)
+
 find_package(PNGwriter REQUIRED)
 
 if(PNGwriter_FOUND)
@@ -20,20 +40,6 @@ if(PNGwriter_FOUND)
     # libraries to link against (including dependencies)
     set(LIBS ${LIBS} ${PNGwriter_LIBRARIES})
 endif(PNGwriter_FOUND)
-
-find_package(OPENCL REQUIRED)
-
-
-if (OpenCL_FOUND)
-endif(OpenCL_FOUND)
-
-ExternalProject_Add(
-    cxxopts
-    #SOURCE_DIR "/Users/kevinward/projects/cxxopts"
-    CMAKE_ARGS "-LAH " -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
-
-    GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
-)
 
 include_directories("/usr/local/include/" ${DEPS_DIR}/include)
 
