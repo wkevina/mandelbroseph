@@ -8,6 +8,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES main.cpp)
 
+set(DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 find_package(PNGwriter REQUIRED)
 
 if(PNGwriter_FOUND)
@@ -27,11 +29,17 @@ endif(OpenCL_FOUND)
 
 ExternalProject_Add(
     cxxopts
+    #SOURCE_DIR "/Users/kevinward/projects/cxxopts"
+    CMAKE_ARGS "-LAH " -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
+
     GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
 )
 
-add_executable(mandelbroseph ${SOURCE_FILES})
+include_directories("/usr/local/include/" ${DEPS_DIR}/include)
+
+add_executable(mandelbroseph ${SOURCE_FILES} mandelbrot.cpp mandelbrot.h)
 
 add_dependencies(mandelbroseph cxxopts)
 
 target_link_libraries(mandelbroseph ${LIBS})
+
