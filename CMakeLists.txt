@@ -6,7 +6,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -DNO_FREETYPE")
 
 set(SOURCE_FILES main.cpp)
 
-set(DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
+
+include_directories(${DEPS_DIR}/include)
+
+link_directories(${DEPS_DIR}/lib)
+
+set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${DEPS_DIR}/lib)
 
 #find_package(OPENCL)
 
@@ -30,16 +36,12 @@ ExternalProject_Add(
 ExternalProject_Add(
     pngwriter
     DEPENDS libpng
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS_DIR} -DCMAKE_LIBRARY_PATH=${DEPS_DIR}/lib
     GIT_REPOSITORY https://github.com/pngwriter/pngwriter.git
+    GIT_TAG release-0.5.5
 )
 
-link_directories(${DEPS_DIR}/lib)
-
 set(LIBS ${LIBS} ${CMAKE_SHARED_LIBRARY_PREFIX}pngwriter${CMAKE_SHARED_LIBRARY_SUFFIX})
-
-include_directories(${DEPS_DIR}/include)
-
 
 add_executable(mandelbroseph ${SOURCE_FILES} mandelbrot.cpp mandelbrot.h)
 
